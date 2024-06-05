@@ -5,7 +5,7 @@
     <title>All notes</title>
 </head>
 <body>
-<div th:each="note: ${notes}">
+<div th:each="note:${notes}">
     <a th:href="@{/notes/{id}(id=${note.getId()})}" th:text="${note.getTitle()}">note</a>
 </div>
 </body>

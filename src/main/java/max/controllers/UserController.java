@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/users")
 public class UserController {
@@ -20,16 +22,14 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable int id, Model model){
-        User user = userDao.show(id);
-        model.addAttribute("user", user);
+    public String show(@PathVariable("id") int id, Model model){
+        model.addAttribute("user", userDao.show(id));
         return "users/show";
     }
 
     @GetMapping()
-    public String index(, Model model){
-        User user = userDao.index(); //TODO finish
-        model.addAttribute("user", user);
-        return "users/show";
+    public String index(Model model){
+        model.addAttribute("users", userDao.index());
+        return "users/index";
     }
 }

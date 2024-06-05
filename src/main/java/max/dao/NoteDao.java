@@ -1,6 +1,7 @@
 package max.dao;
 
 import max.models.Note;
+import max.models.User;
 import org.springframework.stereotype.Component;
 
 import java.sql.PreparedStatement;
@@ -16,7 +17,9 @@ public class NoteDao extends AbstractDao {
     private static final String DELETE = "delete from note where id=?;";
     private static final String SELECT_ONE = "select * from note where id=?;";
     private static final String SELECT_BY_USERID = "select * from note where userId=?;";
-    public NoteDao() { //TODO private
+    private static final String SELECT_ALL = "select * from note;";
+
+    private NoteDao() {
     }
 
     public Note show(int id) {
@@ -37,7 +40,25 @@ public class NoteDao extends AbstractDao {
         }
     }
 
-    public List<Note> index(int userId) {
+    public List<Note> index() {
+        try {
+            ArrayList<Note> list = new ArrayList<>();
+            PreparedStatement ps = connection.prepareStatement(SELECT_ALL);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Note(rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getDate("lastUpdate"),
+                        rs.getInt("userId")));
+            }
+            return list;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Note> getByUserId(int userId) {
         try {
             ArrayList<Note> list = new ArrayList<>();
             PreparedStatement ps = connection.prepareStatement(SELECT_BY_USERID);

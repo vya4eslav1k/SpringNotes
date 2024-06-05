@@ -18,11 +18,18 @@ public class NoteController {
     public NoteController(NoteDao noteDao){
         this.noteDao = noteDao;
     }
+
     @GetMapping()
     public String index(Model model){
-        model.addAttribute("notes", noteDao.index(myId));
+        model.addAttribute("notes", noteDao.index());
         return "notes/index";
     }
+
+//    @GetMapping()
+//    public String index(Model model){
+//        model.addAttribute("notes", noteDao.index());
+//        return "notes/index";
+//    }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model){
