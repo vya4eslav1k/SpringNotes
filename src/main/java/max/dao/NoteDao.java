@@ -1,37 +1,92 @@
 package max.dao;
 
 import max.models.Note;
+import org.springframework.stereotype.Component;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+@Component
 public class NoteDao extends AbstractDao {
-    private NoteDao() {
+    private static final String ADD = "insert into note(content,title,userId,lastUpdate) values(?,?,?,now());";
+    private static final String UPDATE = "update note set content=?,title=?,lastUpdate=NOW() where id=?;";
+    private static final String DELETE = "delete from note where id=?;";
+    private static final String SELECT_ONE = "select * from note where id=?;";
+    private static final String SELECT_BY_USERID = "select * from note where userId=?;";
+    public NoteDao() { //TODO private
     }
 
-    private static NoteDao instance;
-
-    public static NoteDao getInstance() {
-        if (instance == null) {
-            instance = new NoteDao();
+    public Note show(int id) {
+        try {
+            PreparedStatement ps = connection.prepareStatement(SELECT_ONE);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Note(rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getDate("lastUpdate"),
+                        rs.getInt("userId"));
+            }
+            else return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return instance;
     }
 
-    public Note index(int id) {
-        return null; //TODO note
-    }
-
-    public Note[] getNotesByUserId(int id) {
-        return null; //TODO note[]
+    public List<Note> index(int userId) {
+        try {
+            ArrayList<Note> list = new ArrayList<>();
+            PreparedStatement ps = connection.prepareStatement(SELECT_BY_USERID);
+            ps.setInt(1, userId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(new Note(rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getDate("lastUpdate"),
+                        rs.getInt("userId")));
+            }
+            return list;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void add(Note note) {
-        //TODO add note
+        try {
+            PreparedStatement ps = connection.prepareStatement(ADD);
+            ps.setString(1, note.getContent());
+            ps.setString(2, note.getTitle());
+            ps.setInt(3, note.getUserId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void delete(Note note) {
-        //TODO delete note
+        try {
+            PreparedStatement ps = connection.prepareStatement(DELETE);
+            ps.setInt(1, note.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void update(Note note) {
-        //TODO update note
+        try {
+            PreparedStatement ps = connection.prepareStatement(UPDATE);
+            ps.setString(1, note.getContent());
+            ps.setString(2, note.getTitle());
+            ps.setInt(3, note.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

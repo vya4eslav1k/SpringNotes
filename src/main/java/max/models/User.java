@@ -1,11 +1,11 @@
 package max.models;
 
 public class User {
-    private int id;
+    private Integer id;
     private String login;
     private String password;
 
-    public User(int id, String login, String password) {
+    public User(Integer id, String login, String password) {
         this.id = id;
         this.login = login;
         this.password = password;
@@ -15,7 +15,7 @@ public class User {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

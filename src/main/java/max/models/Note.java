@@ -3,13 +3,13 @@ package max.models;
 import java.util.Date;
 
 public class Note {
-    private int id;
+    private Integer id;
     private String title;
     private String content;
     private Date lastUpdate;
-    private int userId;
+    private Integer userId;
 
-    public Note(int id, String title, String content, Date lastUpdate, int userId) {
+    public Note(Integer id, String title, String content, Date lastUpdate, Integer userId) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -21,7 +21,7 @@ public class Note {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -53,7 +53,7 @@ public class Note {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 }

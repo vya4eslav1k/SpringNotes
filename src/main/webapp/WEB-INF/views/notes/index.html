@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>All notes</title>
 </head>
 <body>
-$END$
+<div th:each="note: ${notes}">
+    <a th:href="@{/notes/{id}(id=${note.getId()})}" th:text="${note.getTitle()}">note</a>
+</div>
 </body>
 </html>
