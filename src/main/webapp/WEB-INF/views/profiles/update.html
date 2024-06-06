@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit profile</title>
+</head>
+<body>
+<form th:method="PATCH" th:action="@{/profiles}" th:object="${user}">
+    <input type="text" th:field="*{login}" id="login">
+    <label for="login">Login</label>
+    <br/>
+    <input type="text" th:field="*{password}" id="password">
+    <label for="password">Password</label>
+    <br/>
+    <input type="submit" value="Save">
+    <input type="hidden" th:field="*{id}">
+</form>
+</body>
+</html>

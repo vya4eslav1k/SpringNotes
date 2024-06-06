@@ -8,6 +8,12 @@
 <p th:text="${profile.getUser().getLogin()}"></p>
 <p th:text="${profile.getUser().getPassword()}"></p>
 <p th:text="${profile.getUser().getId()}"></p>
+<form th:method="GET" th:action="@{/profiles/{id}/edit(id=${profile.getUser().getId()})}">
+    <input type="submit" value="Edit">
+</form>
+<form th:method="DELETE" th:action="@{/profiles/{id}/delete(id=${profile.getUser().getId()})}">
+    <input type="submit" value="Delete">
+</form>
 <div th:each="note:${profile.getNotes()}">
     <a th:href="@{/notes/{id}(id=${note.getId()})}" th:text="${note.getTitle()}">note</a>
 </div>
