@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+<p th:text="${profile.getUser().getLogin()}"></p>
+<p th:text="${profile.getUser().getPassword()}"></p>
+<p th:text="${profile.getUser().getId()}"></p>
+<div th:each="note:${profile.getNotes()}">
+    <a th:href="@{/notes/{id}(id=${note.getId()})}" th:text="${note.getTitle()}">note</a>
+</div>
+</body>
+</html>
