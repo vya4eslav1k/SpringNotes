@@ -5,13 +5,16 @@ public class User {
     private String login;
     private String password;
 
+    public User() {
+    }
+
     public User(Integer id, String login, String password) {
         this.id = id;
         this.login = login;
         this.password = password;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

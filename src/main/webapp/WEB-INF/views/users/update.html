@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Edit user</title>
 </head>
 <body>
-$END$
+<form th:method="PATCH" th:action="@{/users}" th:object="${user}">
+    <input type="text" th:field="*{login}" id="login">
+    <label for="login">Login</label>
+    <br/>
+    <input type="text" th:field="*{password}" id="password">
+    <label for="password">Password</label>
+    <input type="submit" value="Save">
+    <input type="hidden" th:field="*{id}">
+</form>
 </body>
 </html>

@@ -1,6 +1,5 @@
 package max.dao;
 
-import max.models.Note;
 import max.models.User;
 import org.springframework.stereotype.Component;
 
@@ -15,15 +14,32 @@ public class UserDao extends AbstractDao {
     private static final String ADD = "insert into user(login,password) values(?,?);";
     private static final String UPDATE = "update user set login=?,password=? where id=?;";
     private static final String DELETE = "delete from user where id=?;";
-    private static final String SELECT_ONE = "select * from user where id=?;";
+    private static final String SELECT_ONE_BY_ID = "select * from user where id=?;";
+    private static final String SELECT_ONE_BY_LOGIN = "select * from user where login=?;";
     private static final String SELECT_ALL = "select * from user;";
     private UserDao() {
     }
 
     public User show(int id) {
         try {
-            PreparedStatement ps = connection.prepareStatement(SELECT_ONE);
+            PreparedStatement ps = connection.prepareStatement(SELECT_ONE_BY_ID);
             ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new User(rs.getInt("id"),
+                        rs.getString("login"),
+                        rs.getString("password"));
+            }
+            else return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private User findByLogin(String login) {
+        try {
+            PreparedStatement ps = connection.prepareStatement(SELECT_ONE_BY_LOGIN);
+            ps.setString(1, login);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return new User(rs.getInt("id"),
@@ -52,12 +68,13 @@ public class UserDao extends AbstractDao {
         }
     }
 
-    public void add(User user) {
+    public User add(User user) {
         try {
             PreparedStatement ps = connection.prepareStatement(ADD);
             ps.setString(1, user.getLogin());
             ps.setString(2, user.getPassword());
             ps.executeUpdate();
+            return findByLogin(user.getLogin());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
